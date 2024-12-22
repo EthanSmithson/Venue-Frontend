@@ -1,0 +1,99 @@
+/* This style is for demonstration purposes only. */
+/* It's not required for the tabs to function. */
+.example-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+}
+
+ion-content {
+    min-height: 100vh;
+    height:100%;
+    width:100%;
+}
+
+ion-tab-bar {
+    height: 6vh;
+}
+
+:host {
+    ion-button {
+        width: 75vw;
+    }
+}
+
+.flex-center-home {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    margin-top: 1vh;
+}
+
+.notiBtns {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    width: 43vw;
+}
+
+ion-list {
+    height: fit-content;
+}
+
+.packageDelete {
+    width: 15vw;
+    margin-left: 2vw;
+    margin-bottom: 1vh;
+}
+
+.packageEdit {
+    width: 15vw;
+    margin-left: 95vw;
+    margin-bottom: 1vh;
+}
+
+.ripple-parent {
+    position: relative;
+    overflow: hidden;
+  
+    border: 1px solid #ddd;
+  }
+  
+  .rectangle {
+    width: 300px;
+    height: 150px;
+  }
+  
+  .rounded-rectangle {
+    width: 185px;
+    height: 65px;
+    border-radius: 8px;
+  }
+  
+  .circle {
+    width: 55px;
+    height: 55px;
+    border-radius: 50%;
+  }
+
+.map {
+    width: 100%;
+    height: 100%;
+}
+
+.svgPerson {
+     height: 5vh;
+}
+
+.eventGrid {
+    --ion-grid-padding: .5rem;
+    margin-right: 7vw;
+}
+
+  button.alert-button.deleteText {
+    background-color: var(--ion-color-success);
+    color: var(--ion-color-success-contrast);
+  }

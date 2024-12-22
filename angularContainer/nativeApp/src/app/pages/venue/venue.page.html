@@ -1,0 +1,53 @@
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,100..900;1,100..900&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons (click)="clickedVenueBackBtn()" slot="start">
+      <ion-back-button color="success"></ion-back-button>
+    </ion-buttons>
+    <div *ngIf="venueName; else templateName">
+      <ion-title>Events at {{venueName}}</ion-title>
+    </div>
+    <ng-template #templateName>
+      <ion-title>Events</ion-title>
+    </ng-template>
+    <ion-buttons style="margin-right: 10px;" slot="end">
+      <ion-menu-button color="success"></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+  <div class="flex-center" id="main-content">
+    <ion-content>
+      @for (event of eventsList; track eventsList) {
+        <ion-item class="eventsList">
+          <div (click)="openEventMenu(event.id)" style="width: 60%;" class="ion-padding">
+            {{event.name}}
+          </div>
+          <div style="float: right; display: flex; flex-direction: row; align-items: center; justify-content: center; padding-left: 1rem;" class="ion-padding">
+            <ion-button #heartBtn class="{{event.id}}" (click)="saveEvent(event.id)" color="success" shape="round">
+              <ion-icon [ngStyle]="{'color': activatedBtn.includes(event.id) ? 'white' : 'black'}" slot="icon-only" name="heart"></ion-icon>
+            </ion-button>
+            <ion-button style="width: 25vw;" color="success" size="small">
+              Get Tickets
+            </ion-button>
+          </div>
+        </ion-item>
+      }
+      <ion-toast
+      [isOpen]="isToastOpen"
+      message="Event Saved"
+      [duration]="3000"
+      (didDismiss)="setOpen(false)"
+      color="light"
+    ></ion-toast>
+    </ion-content>
+  </div>

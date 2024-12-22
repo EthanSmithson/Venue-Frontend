@@ -1,0 +1,74 @@
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,100..900;1,100..900&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons (click)="clickedEventsBackBtn()" slot="start">
+      <ion-back-button color="success"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Events</ion-title>
+    <ion-buttons style="margin-right: 10px;" slot="end">
+      <ion-menu-button color="success"></ion-menu-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <div class="flex-center" id="main-content">
+    <ion-content>
+      <div class="flex-center-home">
+      <h1 class="ion-padding" style="font-size: x-large; font-family: 'Libre Franklin', sans-serif;
+        font-optical-sizing: auto;
+        font-weight: 850;
+        font-style: regular; color: white;">{{eventName}}</h1>
+        <ion-img class="ion-padding" src="{{eventImages}}">
+        </ion-img>
+        <ion-card (click)="viewMap(LatLng)" class="ion-activatable ripple-parent">
+          <ion-ripple-effect></ion-ripple-effect>
+          <div #mapEl id="mapEl" class="map"></div>
+          <!-- <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/card-media.png" /> -->
+          <ion-card-header>
+            <ion-card-title>Event Info</ion-card-title>
+            <!-- <ion-card-subtitle>Card Subtitle</ion-card-subtitle> -->
+          </ion-card-header>
+        
+          <ion-card-content class="eventCard">
+            <div>Event Date: {{eventStartDate}}</div>
+            <div>Start Time: {{eventStartTime}}</div>
+          </ion-card-content>
+        </ion-card>
+        <ion-grid style="position: fixed;
+                      left: 0;
+                      bottom: -5px;
+                      right: 0;">
+          <ion-row>
+            <ion-col size="9.3">
+              <ion-button (click)="redirectToTickets(eventTickets)" class="ion-padding" shape="round" color="success" position="bottom" expand="full">
+              Get Tickets
+              </ion-button>
+            </ion-col>
+            <ion-col size="2.7">
+              <ion-button (click)="isEventSaved(eventId)" class="ion-padding" color="success" position="bottom">
+              <ion-icon [ngStyle]="{'color': isSaved.isSaved ? 'white' : 'black'}" slot="icon-only" name="heart"></ion-icon>
+              </ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </div>
+      <ion-toast
+      [isOpen]="isToastOpen"
+      message="Event Saved"
+      [duration]="3000"
+      (didDismiss)="setOpen(false)"
+      color="light"
+    ></ion-toast>
+    </ion-content>
+  </div>
+</ion-content>

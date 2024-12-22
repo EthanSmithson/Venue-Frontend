@@ -1,0 +1,68 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button color="success"></ion-back-button>
+    </ion-buttons>
+    <ion-title color="success">Register</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="flex-center">
+    <form [formGroup]="form" (ngSubmit)="submitRegistration(form.value)">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title color="success">Register</ion-card-title>
+          <!-- <ion-note *ngIf="data">
+            {{data.message}}
+          </ion-note> -->
+        </ion-card-header>
+      
+        <ion-card-content>
+          <ion-item>
+            <ion-input color="success" formControlName="firstName" aria-required="true" label="First Name" labelPlacement="floating" type="text"></ion-input>
+          </ion-item>
+          <ion-label *ngIf="form.get('firstName').touched && form.get('firstName').errors?.required" class="errorLabel" color="danger">First name is required</ion-label>
+          <ion-item>
+            <ion-input label="Last Name" color="success" formControlName="lastName" labelPlacement="floating" type="text"></ion-input>
+          </ion-item>
+          <ion-label *ngIf="form.get('lastName').touched && form.get('lastName').errors?.required" class="errorLabel" color="danger">Last name is required</ion-label>
+          <ion-item>
+            <ion-input formControlName="email" label="Email" labelPlacement="floating" color="success" type="email"></ion-input>
+          </ion-item>
+          <ion-label *ngIf="form.get('email').touched && form.get('email').errors?.required" class="errorLabel" color="danger">Email is required</ion-label>
+          <ion-label *ngIf="form.get('email').touched && form.get('email').errors?.email" class="errorLabel" color="danger">Email is invalid</ion-label>
+          <ion-label #removeEmailError color="danger" class="errorLabel" *ngIf="emailError">{{emailError.undefined}}</ion-label>
+          <ion-label #removeEmailError color="danger" class="errorLabel" *ngIf="userExists && !form.get('email').errors?.required && !form.get('email').errors?.email && !removeEmailError">User Exists!</ion-label>
+          <ion-item>
+            <ion-input label="Phone Number" formControlName="phoneNumber" labelPlacement="floating" color="success" maxLength="10"></ion-input>
+          </ion-item>
+          <ion-label *ngIf="form.get('phoneNumber').touched && form.get('phoneNumber').errors?.required" class="errorLabel" color="danger">Phone number is required</ion-label>
+          <ion-label *ngIf="form.get('phoneNumber').touched && form.get('phoneNumber').errors?.phoneNumber" class="errorLabel" color="danger">Phone number is invalid</ion-label>
+          <ion-label *ngIf="form.get('phoneNumber').touched && form.get('phoneNumber').errors?.minlength" class="errorLabel" color="danger">Phone number must be 10 digits</ion-label>
+          <ion-item>
+            <ion-input label="Create Password" formControlName="password" labelPlacement="floating" color="success" type="password"></ion-input>
+          </ion-item>
+          <ion-label *ngIf="form.get('password').touched && form.get('password').errors?.required" class="errorLabel" color="danger">Password is required</ion-label>
+          <ion-label *ngIf="form.get('password').touched && form.get('password').errors?.minlength" class="errorLabel" color="danger">Password must be more than 6 characters</ion-label>
+          <ion-label class="errorLabel" #removePasswordError color="danger" *ngIf="passwordError">{{passwordError.undefined}}</ion-label>
+          <ion-item>
+            <ion-input label="Confirm Password" labelPlacement="floating" formControlName="confirmPassword" type="password" color="success"></ion-input>
+          </ion-item>
+          <ion-label *ngIf="form.get('confirmPassword').touched && form.get('confirmPassword').errors?.required" class="errorLabel" color="danger">Please re-enter password</ion-label>
+          <ion-label color="danger" class="errorLabel" *ngIf="form.errors?.mismatch && (form.controls['confirmPassword'].dirty) &&  !form.get('confirmPassword').errors?.required">Passwords don't match.</ion-label>
+          <ion-button
+          type="submit" 
+          color="success"
+          [disabled]="!form.valid"
+          size="full">
+            Create Account
+          </ion-button>
+          <ion-button (click)="goToLogin()" color="success" fill="clear" size="full">
+            Login
+          </ion-button>
+        </ion-card-content>
+      </ion-card>
+    </form>
+  </div>
+</ion-content>

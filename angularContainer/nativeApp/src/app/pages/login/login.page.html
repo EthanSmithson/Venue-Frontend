@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-toolbar>
+    <!-- <ion-buttons slot="start">
+      <ion-back-button color="success"></ion-back-button>
+    </ion-buttons> -->
+    <ion-title color="success">Venue</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="flex-center">
+    <form [formGroup]="form" (ngSubmit)="submitLogin(form.value)">
+      <ion-card>
+        <ion-card-header>
+          <ion-card-title color="success">Login</ion-card-title>
+        </ion-card-header>
+        <ion-card-content>
+            <ion-item>
+              <ion-input label="Email" formControlName="email" labelPlacement="floating" type="email" color="success"></ion-input>
+            </ion-item>
+            <ion-label *ngIf="form.get('email').touched && form.get('email').errors?.required" class="errorLabel" color="danger">Email is required</ion-label>
+            <ion-label *ngIf="form.get('email').touched && form.get('email').errors?.email" class="errorLabel" color="danger">Email is invalid</ion-label>
+            <ion-label #removeEmailError color="danger" class="errorLabel" *ngIf="emailError  && !removeEmailError">{{emailError.undefined}}</ion-label>
+            <ion-label #removeEmailError color="danger" class="errorLabel" *ngIf="userDoesNotExists  && !removeEmailError && !form.get('email').errors?.required  && !form.get('email').errors?.email && !removeUserDoesNotExists">{{userDoesNotExists}}</ion-label>
+            <!-- <ion-note *ngIf="data">
+              {{data}}
+            </ion-note> -->
+            <ion-item>
+              <ion-input label="Password" formControlName="password" labelPlacement="floating" color="success" type="password"></ion-input>
+            </ion-item>
+            <ion-label *ngIf="form.get('password').touched && form.get('password').errors?.required" class="errorLabel" color="danger">Password is required</ion-label>
+            <ion-label class="errorLabel" #removePasswordError color="danger" *ngIf="passwordError">{{passwordError.undefined}}</ion-label>
+            <ion-button
+            (click)="resetEmail(form.value)"
+            [disabled]="!form.get('email').valid"
+              color="dark" size="full" fill="clear">
+              forgot email/password
+            </ion-button>
+            <ion-button 
+            [disabled]="!form.valid" 
+            color="success" 
+            size="full" 
+            type="submit">
+              Login
+            </ion-button>
+          <ion-button (click)="goToRegister()" color="success" fill="clear" size="full">
+            Register
+          </ion-button>
+        </ion-card-content>
+      </ion-card>
+    </form>
+  </div>
+</ion-content>

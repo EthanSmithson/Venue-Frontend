@@ -1,0 +1,327 @@
+<head>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:ital,wght@0,100..900;1,100..900&family=Quicksand:wght@300..700&display=swap" rel="stylesheet">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+  <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyD4AJX7dsVR4DkYHUP-J3exqx9c4Q4ucL8"></script>
+  <script>(g=>{var h,a,k,p="The Google Maps JavaScript API",c="google",l="importLibrary",q="__ib__",m=document,b=window;b=b[c]||(b[c]={});var d=b.maps||(b.maps={}),r=new Set,e=new URLSearchParams,u=()=>h||(h=new Promise(async(f,n)=>{await (a=m.createElement("script"));e.set("libraries",[...r]+"");for(k in g)e.set(k.replace(/[A-Z]/g,t=>"_"+t[0].toLowerCase()),g[k]);e.set("callback",c+".maps."+q);a.src=`https://maps.${c}apis.com/maps/api/js?`+e;d[q]=f;a.onerror=()=>h=n(Error(p+" could not load."));a.nonce=m.querySelector("script[nonce]")?.nonce||"";m.head.append(a)}));d[l]?console.warn(p+" only loads once. Ignoring:",g):d[l]=(f,...n)=>r.add(f)&&u().then(()=>d[l](f,...n))})
+        ({key: "AIzaSyD4AJX7dsVR4DkYHUP-J3exqx9c4Q4ucL8", v: "weekly"});</script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+<ion-content>
+  <div>
+    <ion-tabs>
+      <ion-tab tab="home">
+        <div id="home-page">
+          <ion-header>
+            <ion-toolbar>
+              <ion-title>Hello {{myName}}</ion-title>
+              <ion-buttons #hamburgerBtn id="hamburgerBtn" style="margin-right: 10px;" slot="end">
+                <ion-menu-button color="success"></ion-menu-button>
+              </ion-buttons>
+            </ion-toolbar>
+          </ion-header>
+          <ion-content>
+            <ion-refresher slot="fixed" (ionRefresh)="handleHomeRefresh($event)">
+              <ion-refresher-content>
+              </ion-refresher-content>
+            </ion-refresher>
+            <div class="flex-center-home">
+              <h1 style="font-size: xx-large; font-family: 'Libre Franklin', sans-serif;
+              font-optical-sizing: auto;
+              font-weight: 850;
+              font-style: regular; color: white; margin-left: -58vw;">Search</h1>
+              <ion-searchbar #searchbar id="searchbar" (ionClear)="clearSearchedItems()" (keyup)="searchKeyUp($event)" animated="true" placeholder="Search Events"></ion-searchbar>
+              <ion-list #searchedList id="searchedList" style="position: absolute; width: 93%; z-index: 100; top: 12.5%; opacity: 92%;" [inset]="true">
+                @for (event of searchResults; track searchResults) {
+                  <ion-item appClickedOutside (clickedOutside)="clearSearchedItemsCloseFab()" (click)="clickedSearchEvent(event)">
+                    <div style="width: fit-content;">{{event.name}}</div>
+                    <div>{{event._embedded.venues[0].name}}</div>
+                  </ion-item>
+                }
+              </ion-list>
+              <h1 style="font-size: xx-large; font-family: 'Libre Franklin', sans-serif;
+              font-optical-sizing: auto;
+              font-weight: 850;
+              font-style: regular; color: white; margin-left: -47vw;">Locations</h1>
+              <ion-list>
+                @for (event of events; track events) {
+                  <ion-card class="ion-activatable" (click)="viewVenue(event.id, event.name)">
+                    <ion-ripple-effect></ion-ripple-effect>
+                    <img style="opacity: 0.5;
+                    left: 0;
+                    top: 0;
+                    width: 100%;
+                    height: auto; background-position:50% 50%;" alt="Silhouette of mountains" src="{{event.images[0].url}}" />
+                    <ion-card-header>
+                      <ion-card-title style=" font-family: 'Libre Franklin', sans-serif;
+                      font-optical-sizing: auto;
+                      font-weight: 500;
+                      font-style: regular;">{{event.name}}</ion-card-title>
+                      <!-- <ion-card-subtitle>Card Subtitle</ion-card-subtitle> -->
+                    </ion-card-header>
+                  
+                    <ion-card-content style=" font-family: 'Libre Franklin', sans-serif;
+                    font-optical-sizing: auto;
+                    font-weight: 300;
+                    font-style: regular;">
+                      Miles Away: {{event.distance}}
+                    </ion-card-content>
+                  </ion-card>
+                  <!-- <ion-item>
+                    <ion-card (click)="viewVenue(event.id)" style="width: 93vw; height: 22vh;">
+                    <img style="opacity: 0.5;
+                    position: absolute;
+                    left: 0;
+                    top: 0;
+                    width: 100%;
+                    height: auto; background-position:50% 50%;" src="{{event.images[0].url}}">
+                      <ion-card-header>
+                        <ion-card-title style="font-size: x-large; font-family: 'Libre Franklin', sans-serif;
+                        font-optical-sizing: auto;
+                        font-weight: 850;
+                        font-style: regular; color: white;">{{event.name}}</ion-card-title>
+                      </ion-card-header>
+                      <ion-card-content style="  font-family: 'Quicksand', sans-serif;
+                      font-optical-sizing: auto;
+                      font-weight: 400;
+                      font-style: regular; color: white;">
+                           Miles Away: {{event.distance}}
+                      </ion-card-content>
+                    </ion-card>
+                  </ion-item> -->
+                }
+              </ion-list>
+              <!-- <h1>Upcoming Venues</h1> -->
+               <div style="height: 15vh; width: 100%; background-color: transparent;"></div>
+            </div>
+          </ion-content>
+          <ion-fab slot="fixed" vertical="bottom" horizontal="end" appClickedOutside (clickedOutside)="clearSearchedItemsCloseFab()">
+            <ion-list style="
+            position: absolute;
+            width: fit-content;
+            z-index: 100;
+            bottom: 183.5%;
+            opacity: 92%;
+            margin-left: -56vw;" [inset]="true">
+              @for (event of searchResultsV2; track searchResultsV2) {
+                <ion-item (click)="clickedSearchEvent(event)">
+                  <div style="width: fit-content;">{{event.name}}</div>
+                  <div>{{event._embedded.venues[0].name}}</div>
+                </ion-item>
+              }
+            </ion-list>
+            <ion-fab-button #fabBtnV2 id="fabBtnV2" (click)="clearSearchedItems()" class="ion-margin" color="success" appFocusSearchbar (focusSearchbar)="focuseSearchbar()">
+              <ion-icon name="search-outline"></ion-icon>
+            </ion-fab-button>
+            <ion-fab-list side="top">
+              <form [formGroup]="form" (ngSubmit)="submitPackage(form.value)">
+                <ion-item #searchbarItem id="searchbarItem" style="margin-left: -54vw;">
+                  <ion-searchbar #searchbarV2 id="searchbarV2" (ionClear)="clearSearchedItems()" (keyup)="searchKeyUpV2($event)" placeholder="Search Events"></ion-searchbar>
+                </ion-item>
+              </form> 
+            </ion-fab-list>
+          </ion-fab>
+        </div>
+      </ion-tab>
+      <ion-tab tab="map">
+        <div id="map-page">
+          <ion-header>
+            <ion-toolbar>
+              <ion-title>Map</ion-title>
+              <ion-buttons style="margin-right: 10px;" slot="end">
+                <ion-menu-button color="success"></ion-menu-button>
+              </ion-buttons>
+            </ion-toolbar>
+          </ion-header>
+          <ion-content>
+            <div class="example-content">
+              <div #mapEl id="mapEl" class="map"></div>
+              <ion-alert
+              trigger="mapAlert"
+              header="Alert!"
+              [buttons]="alertButtons"
+              (didDismiss)="setResultMap($event)"
+            ></ion-alert>
+            </div>
+          </ion-content>
+        </div>
+      </ion-tab>
+      <ion-tab tab="radio">
+        <div id="radio-page">
+          <ion-header>
+            <ion-toolbar>
+              <ion-title>My Events</ion-title>
+              <ion-buttons style="margin-right: 10px;" slot="end">
+                <ion-menu-button color="success"></ion-menu-button>
+              </ion-buttons>
+            </ion-toolbar>
+          </ion-header>
+          <ion-content>
+            <ion-refresher slot="fixed" (ionRefresh)="handleSavedEventsRefresh($event)">
+              <ion-refresher-content>
+              </ion-refresher-content>
+            </ion-refresher>
+                <div class="flex-center-home" #page>
+                  <!-- <ion-list [inset]="true"> -->
+                    <ion-grid class="eventGrid">
+                      <ion-row>
+                        <ion-col *ngFor="let event of savedEvents" size="6" size-md="4" size-lg="2">
+                          <ion-card *ngIf="!filterTheseEvents.includes(event.eventId)" #openModal id="open-modal" (click)="openSavedEvent(event)" class="ion-activatable {{event.eventId}}" style="height: 100%; width: 100%;">
+                            <ion-ripple-effect></ion-ripple-effect>
+                            <img style="opacity: 0.5;
+                            left: 0;
+                            top: 0;
+                            width: 100%;
+                            height: auto; background-position:50% 50%;" alt="Event Image" src="{{event.eventImage}}" />
+                            <ion-card-header>
+                              <ion-card-title style="font-size: medium;">{{event.eventName}}</ion-card-title>
+                            </ion-card-header>
+                            <!-- <ion-card-content> Card Content </ion-card-content> -->
+                          </ion-card>
+                        </ion-col>
+                      </ion-row>
+                    </ion-grid>
+                    <!-- <ion-modal #modal [isOpen]="isModalOpen" [presentingElement]="presentingElement">
+                      <ng-template>
+                        <ion-header>
+                          <ion-toolbar>
+                            <ion-title>Modal</ion-title>
+                            <ion-buttons slot="end">
+                              <ion-button (click)="closeModal()">Close</ion-button>
+                            </ion-buttons>
+                          </ion-toolbar>
+                        </ion-header>
+                        <ion-content>
+                        </ion-content>
+                      </ng-template>
+                    </ion-modal> -->
+                    <ion-modal #modal [isOpen]="isModalOpen" [canDismiss]="canDismiss" [presentingElement]="page">
+                      <ng-template>
+                        <ion-header>
+                          <ion-toolbar>
+                            <ion-title>{{this.eventName}}</ion-title>
+                            <ion-buttons slot="end">
+                              <ion-button color="success" (click)="closeModal()">Close</ion-button>
+                            </ion-buttons>
+                          </ion-toolbar>
+                        </ion-header>
+                        <ion-content class="ion-padding">
+                          <ion-img class="ion-padding" src="{{eventImages}}"></ion-img>
+                          <app-countdown></app-countdown>
+                          <ion-img class="ion-padding" src="{{seatMap}}"></ion-img>
+                          <ion-grid style="position: fixed;
+                          left: 0;
+                          bottom: 10px;
+                          right: 0;">
+                            <ion-row>
+                              <ion-col size="6">
+                                <ion-button id="present-alert" class="ion-padding" shape="round" color="danger" position="bottom" expand="block"><ion-icon name="trash-outline"></ion-icon></ion-button>
+                              </ion-col>
+                              <ion-col size="6">
+                                <ion-button (click)="redirectToTickets(eventTickets)" class="ion-padding" shape="round" color="success" position="bottom" expand="block">Get Tickets</ion-button>
+                              </ion-col>
+                            </ion-row>
+                          </ion-grid>
+                          <ion-alert
+                          trigger="present-alert"
+                          header="Alert!"
+                          [buttons]="alertButtons"
+                          (didDismiss)="setResult($event, eventId)"></ion-alert>
+                        </ion-content>
+                      </ng-template>
+                    </ion-modal>
+                  <div style="height: 20vh; width: 100%; background-color: transparent;"></div>
+                </div>
+                
+          </ion-content>
+          <ion-searchbar style="margin: 0 auto;display:block;position:absolute; bottom: 20px;" align-center (keyup)="filterEvents($event)" animated="true" placeholder="Filter Saved Events"></ion-searchbar>
+          <!-- <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+            <ion-fab-button #fabBtnV2 id="fabBtnV3" (click)="clearSearchedItems()" class="ion-margin" color="success" appFocusSearchbar (focusSearchbar)="focuseSearchbar()">
+              <ion-icon name="search-outline"></ion-icon>
+            </ion-fab-button>
+            <ion-fab-list side="top">
+              <form [formGroup]="form" (ngSubmit)="submitPackage(form.value)">
+                <ion-item #searchbarItem id="searchbarItem" style="margin-left: -54vw;">
+                  <ion-searchbar #searchbarV2 id="searchbarV3" (ionClear)="clearSearchedItems()" (keyup)="filterEvents($event)" placeholder="Search Events"></ion-searchbar>
+                </ion-item>
+              </form> 
+            </ion-fab-list>
+          </ion-fab> -->
+        </div>
+      </ion-tab>
+      <ion-tab tab="search">
+        <div id="search-page">
+          <ion-header>
+            <ion-toolbar>
+              <ion-title>Profile</ion-title>
+              <ion-buttons style="margin-right: 10px;" slot="end">
+                <ion-menu-button color="success"></ion-menu-button>
+              </ion-buttons>
+            </ion-toolbar>
+          </ion-header>
+          <ion-content>
+            <div class="flex-center-home">
+              <ion-avatar (click)="uploadMyProfileImg()" class="ion-activatable ripple-parent circle">
+                <ion-ripple-effect></ion-ripple-effect>
+                <img alt="Profile Image" src="https://www.venueapp.live/uploads/{{myProfileImage}}" />
+              </ion-avatar>
+              <input (change)="selectedProfPic($event)" type="file" accept="image/*" hidden id="profileUpload" #profileUpload />
+              <ion-list style="width: 85%; margin-top: 5vh;" [inset]="true">
+                <ion-item id="open-modal" (click)="openProfModal()" [button]="true">
+                  <ion-icon color="danger" slot="start" name="list-circle" size="large"></ion-icon>
+                  <ion-label (click)="goToSettings(1)">Profile</ion-label>
+                  <!-- <ion-note slot="end">6</ion-note> -->
+                </ion-item>
+                <!-- <ion-modal #modal trigger="open-modal" [canDismiss]="canDismiss" [presentingElement]="presentingElement">
+                  <ng-template>
+                    <ion-header>
+                      <ion-toolbar>
+                        <ion-title>Modal</ion-title>
+                        <ion-buttons slot="end">
+                          <ion-button (click)="modal.dismiss()">Close</ion-button>
+                        </ion-buttons>
+                      </ion-toolbar>
+                    </ion-header>
+                    <ion-content class="ion-padding">
+                      <p>You will be prompted when closing this modal.</p>
+                    </ion-content>
+                  </ng-template>
+                </ion-modal> -->
+                <ion-item [button]="true">
+                  <ion-icon color="tertiary" slot="start" name="list-circle" size="large"></ion-icon>
+                  <ion-label (click)="goToSettings(2)">Notifications</ion-label>
+                  <!-- <ion-note slot="end">15</ion-note> -->
+                </ion-item>
+              </ion-list>
+            </div>
+          </ion-content>
+        </div>
+      </ion-tab>
+    
+      <ion-tab-bar slot="bottom">
+        <ion-tab-button (click)="clearSearchedItemsCloseFab()" tab="home" #homeTab id="homeTab">
+          <ion-icon name="home-outline"></ion-icon>
+          Home
+        </ion-tab-button>
+        <ion-tab-button (click)="clearSearchedItemsCloseFab()" (click)="openMainMap()" #mapTab id="mapTab" tab="map">
+          <ion-icon name="map-outline"></ion-icon>
+          Map
+        </ion-tab-button>
+        <ion-tab-button (click)="clearSearchedItemsCloseFab()" tab="radio" #eventsTab id="eventsTab">
+          <ion-icon name="musical-notes-outline"></ion-icon>
+          Events
+        </ion-tab-button>
+        <ion-tab-button tab="search" (click)="clearSearchedItemsCloseFab()" #profTab id="profTab">
+          <ion-icon name="person-outline"></ion-icon>
+          Profile
+        </ion-tab-button>
+      </ion-tab-bar>
+    </ion-tabs>
+  </div>
+</ion-content>
